@@ -2,29 +2,17 @@
 package db
 
 import (
-	"fmt"
-	"log"
-
-	"github.com/boltdb/bolt"
+	"github.com/go-redis/redis/v8"
 )
 
-var DB *bolt.DB
+var RDB *redis.Client
 
 func Connect() {
-	db, err := bolt.Open("earl.db", 0600, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte("urls"))
-		if err != nil {
-			return fmt.Errorf("create bucket %s", err)
-		}
-		return nil
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "redis:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
 	})
 
-	// defer db.Close()
-
-	DB = db
+	RDB = rdb
 }

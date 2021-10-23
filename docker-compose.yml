@@ -1,0 +1,23 @@
+version: "3.8"
+
+networks:
+  earl.network:
+
+services:
+  api:
+    build: .
+    command: reflex -r '\.go$$' -s -- sh -c 'go build . && ./earl'
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/go/src/app
+    depends_on:
+      - redis
+    networks:
+      - "earl.network"
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - "earl.network"

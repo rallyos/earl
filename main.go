@@ -16,5 +16,5 @@ func main() {
 	r.HandleFunc("/api/shorten", handlers.Shorten).Methods(http.MethodPost)
 	r.HandleFunc("/{shortUrl:[a-zA-Z0-9]+}", handlers.Redirect).Methods(http.MethodGet)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8000", r))
 }

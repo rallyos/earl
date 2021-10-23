@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+//
 func Redirect(w http.ResponseWriter, r *http.Request) {
 	shortUrl := r.RequestURI[1:]
 

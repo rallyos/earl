@@ -1,27 +1,28 @@
 package url
 
 import (
+	"context"
 	"earl/db"
-	"github.com/boltdb/bolt"
+	"time"
 )
 
-// TODO(Research): Keep struct, or just string encode/decode a struct?
-func Create(shortUrl, longUrl string) error {
-	err := db.DB.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte("urls"))
-		err := b.Put([]byte(shortUrl), []byte(longUrl))
-		return err
-	})
+const EXPIRATION = time.Minute * 7200
 
-	return err
+var ctx = context.Background()
+
+func Create(shortUrl, longUrl string) error {
+	if err := db.RDB.Set(ctx, shortUrl, longUrl, EXPIRATION).Err(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func Get(shortUrl string) (string, error) {
-	var longUrl []byte
-	err := db.DB.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte("urls"))
-		longUrl = b.Get([]byte(shortUrl))
-		return nil
-	})
-	return string(longUrl), err
+	longUrl, err := db.RDB.Get(ctx, shortUrl).Result()
+	if err != nil {
+		return "", err
+	}
+
+	return longUrl, nil
 }

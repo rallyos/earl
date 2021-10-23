@@ -1,43 +1,55 @@
 package handlers
 
 import (
-	"earl/shorten"
+	"earl/app/shorten"
+	"earl/app/validate"
 	"encoding/json"
 	"fmt"
 	"net/http"
 )
 
+type urlWrapper struct {
+	Url string
+}
+
+//
 func Shorten(w http.ResponseWriter, r *http.Request) {
 	response := json.NewEncoder(w)
-	// TODO: Is URL validation?
+	var urlWrap urlWrapper
 
-	urlCarrier := struct {
-		Url string `json:"url"`
-	}{}
+	if err := json.NewDecoder(r.Body).Decode(&urlWrap); err != nil {
+		halt(&urlWrap, response, w, err)
+		return
+	}
 
-	err := json.NewDecoder(r.Body).Decode(&urlCarrier)
+	if _, err := validate.IsUrlurl(urlWrap.Url); err != nil {
+		halt(&urlWrap, response, w, err)
+		return
+	}
+
+	shortUrl, err := shorten.Shorten(urlWrap.Url)
 	if err != nil {
-		urlCarrier.Url = err.Error()
-		response.Encode(urlCarrier)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	shortUrl, err := shorten.Shorten(urlCarrier.Url)
-	if err != nil {
-		urlCarrier.Url = err.Error()
-		response.Encode(urlCarrier)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	setScheme(r)
+	urlWrap.Url = fmt.Sprintf("%s://%s/%s", r.URL.Scheme, r.Host, shortUrl)
 
+	w.WriteHeader(http.StatusCreated)
+	response.Encode(urlWrap)
+}
+
+//
+func halt(urlWrap *urlWrapper, response *json.Encoder, w http.ResponseWriter, err error) {
+	urlWrap.Url = err.Error()
+	response.Encode(urlWrap)
+}
+
+func setScheme(r *http.Request) {
 	if r.TLS == nil {
 		r.URL.Scheme = "http"
 	} else {
 		r.URL.Scheme = "https"
 	}
-	urlCarrier.Url = fmt.Sprintf("%s://%s/%s", r.URL.Scheme, r.Host, shortUrl)
-
-	w.WriteHeader(http.StatusCreated)
-	response.Encode(urlCarrier)
 }
