@@ -1,21 +1,40 @@
 package shorten
 
 import (
+	"earl/db"
 	"testing"
+
+	"github.com/matryer/is"
 )
 
-func TestShorten(t *testing.T) {
-	url := "https://shiftingphotons.dev/things/internet-historian-engoodening-of-no-mans-sky/"
-	shortenedUrl := Shorten(url)
+func init() {
+	db.Connect()
+}
 
-	if len(shortenedUrl) > 7 {
-		t.Errorf("Expected shortened url to have length lower than 7, got %d", len(shortenedUrl))
+func TestShorten(t *testing.T) {
+	is := is.New(t)
+
+	url := "https://shiftingphotons.dev/things/internet-historian-engoodening-of-no-mans-sky/"
+	shortenedUrl, err := Shorten(url)
+
+	is.NoErr(err)
+	is.True(len(shortenedUrl) <= 7)
+}
+
+func TestEncodeB62(t *testing.T) {
+	is := is.New(t)
+
+	buf := encodeB62(11157)
+	if buf.String() != "73C" {
+		is.Equal("73C", buf.String())
 	}
 }
 
-func TestHashToB62(t *testing.T) {
-	buf := hashToB62(11157)
-	if buf.String() != "73C" {
-		t.Errorf("Wrong value. Expected %s, got %s.", "73C", buf.String())
-	}
+func TestGenerateRand(t *testing.T) {
+	is := is.New(t)
+
+	numOne := generateRand()
+	numTwo := generateRand()
+
+	is.True(numOne != numTwo)
 }

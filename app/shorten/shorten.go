@@ -22,7 +22,7 @@ var b62 [62]byte = [62]byte{65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 
 //
 func Shorten(longUrl string) (string, error) {
 	id := generateRand()
-	shortUrl := hashToB62(id)
+	shortUrl := encodeB62(id)
 
 	u := Url{
 		ID:       id,
@@ -37,7 +37,7 @@ func Shorten(longUrl string) (string, error) {
 	return u.ShortURL, nil
 }
 
-func hashToB62(n uint64) bytes.Buffer {
+func encodeB62(n uint64) bytes.Buffer {
 	var r int
 	var buf bytes.Buffer
 
