@@ -10,10 +10,9 @@ import (
 	"github.com/matryer/is"
 )
 
+// TODO: Do we need to initialize the DB?
 func TestRedirect(t *testing.T) {
 	is := is.New(t)
-
-	// TODO INIT DB?
 
 	longUrl := "https://shiftingphotons.dev/things/internet-historian-engoodening-of-no-mans-sky/"
 	shortUrl, err := createURL(longUrl)

@@ -22,7 +22,7 @@ func Shorten(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := validate.IsUrlurl(urlWrap.Url); err != nil {
+	if _, err := validate.IsUrl(urlWrap.Url); err != nil {
 		halt(&urlWrap, response, w, err)
 		return
 	}
