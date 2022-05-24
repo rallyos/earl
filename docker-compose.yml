@@ -7,6 +7,8 @@ services:
   api:
     build: .
     command: reflex -r '\.go$$' -s -- sh -c 'go build . && ./earl'
+    environment:
+      - REDIS_HOST=redis
     ports:
       - "8000:8000"
     volumes:
