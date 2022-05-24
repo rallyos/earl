@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-const EXPIRATION = time.Minute * 7200
+const EXPIRATION = time.Minute * 120
 
 var ctx = context.Background()
 
