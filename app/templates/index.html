@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>earl - shorten urls for fun.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <style>
+    body,
+    html {
+      background-color: #3b1c47;
+      font-family: "VT323", monospace;
+      margin: 0 auto;
+      width: 100vw;
+
+      <!-- background: rgb(30, 27, 52); -->
+      <!-- background: linear-gradient( -->
+      <!--   180deg, -->
+      <!--   rgba(30, 27, 52, 1) 50%, -->
+      <!--   rgba(33, 91, 163, 1) 100% -->
+      <!-- ); -->
+
+    }
+    #header,
+    #main {
+      width: 60vw;
+    }
+    #footer {
+      width: 100vw;
+    }
+
+    p {
+      font-size: 1.5em;
+      color: #347BBE;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin-top: 10px;
+      color: #d78939;
+      font-size: 4em;
+    }
+    h2 {
+      color: #d78939;
+      font-size: 2em;
+      margin: 10px auto 10px;
+    }
+    #header {
+      min-height: 30vh;
+      text-align: center;
+      margin: 0 auto 80px;
+    }
+    #main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      margin: 0 auto 50px;
+    }
+    #footer {
+      min-height: 6vh;
+      background-color: #d78939;
+    }
+    #url-input {
+      display: inline-block;
+      width: 39%;
+      height: 50px;
+      font-size: 1.15em;
+      padding-left: 1%;
+      margin-bottom: 40px;
+      border-radius: 8px;
+      border: 0;
+    }
+
+    #shorten-button {
+      height: 40px;
+      width: 120px;
+      margin-bottom: 60px;
+      border-radius: 6px;
+      background-color: #ca5172;
+      color: #fff;
+      border: 0;
+      font-size: 1.75em;
+      font-family: "VT323", monospace;
+      cursor: pointer;
+    }
+  </style>
+
+  <body>
+    <header id="header">
+      <h1>earl.sh</h1>
+      <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industry's standard dummy text ever
+        since the 1500s, when an unknown printer took a galley of type and
+        scrambled it to make a type specimen book. It has survived not only five
+        centuries, but also the leap into electronic typesetting, remaining
+        essentially unchanged. It was popularised in the 1960s with the release
+        of Letraset sheets containing Lorem Ipsum passages, and more recently
+        with desktop publishing software like Aldus PageMaker including versions
+        of Lorem Ipsum.
+      </p>
+    </header>
+    <main id="main">
+      <input
+        type="url"
+        name="url"
+        id="url-input"
+        value=""
+        placeholder="A long URL that needs shortening . . ."
+      />
+      <button id="shorten-button" onClick="shorten()">Shorten</button>
+      <div id="response-container"></div>
+    </main>
+    <footer id="footer"></footer>
+  </body>
+
+  <script>
+    var shortenedUrl = null;
+
+    const showShortenedUrl = (shortenedUrl) => {
+      let html = `
+            <h2>Your short URL is ready. It will be available for 72 hours.</h2>
+            <h2 style="color: #728BE7"><a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a></h2>
+          `;
+      let container = document.getElementById("response-container");
+      container.innerHTML = html;
+    };
+
+    const shorten = () => {
+      const url = document.getElementById("url-input").value;
+      const request = fetch("/api/shorten", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: url }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          let shortenedUrl = data.Url;
+          showShortenedUrl(shortenedUrl);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+  </script>
+</html>

@@ -18,7 +18,7 @@ services:
     networks:
       - "earl.network"
   redis:
-    image: 'bitnami/redis:latest'
+    image: "bitnami/redis:6.2" # TODO Go back to latest when the default protected mode in (=> 7.0) is resolved.
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     networks:

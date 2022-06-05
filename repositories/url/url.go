@@ -3,6 +3,7 @@ package url
 import (
 	"context"
 	"earl/db"
+	"fmt"
 	"time"
 )
 
@@ -12,6 +13,7 @@ var ctx = context.Background()
 
 func Create(shortUrl, longUrl string) error {
 	if err := db.RDB.Set(ctx, shortUrl, longUrl, EXPIRATION).Err(); err != nil {
+		fmt.Println(err.Error())
 		return err
 	}
 
