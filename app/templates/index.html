@@ -31,23 +31,21 @@
       <!-- ); -->
 
     }
+
     #header,
     #main {
       width: 70vw;
     }
+
     #footer {
       width: 100vw;
-    }
-
-    p {
-      font-size: 1.5em;
-      color: #347BBE;
     }
 
     a {
       text-decoration: none;
       color: inherit;
     }
+
     a:hover {
       text-decoration: underline;
     }
@@ -57,25 +55,50 @@
       color: #d78939;
       font-size: 4em;
     }
+
     h2 {
       color: #d78939;
       font-size: 2em;
       margin: 10px auto 10px;
     }
+
     #header {
       min-height: 30vh;
       text-align: center;
       margin: 0 auto 0;
     }
+
+    .intro-text {
+      border-top: solid 4px #d78939;
+      padding-top: 30px;
+      font-size: 1.5em;
+      color: #347BBE;
+    }
+
     #main {
       display: flex;
       flex: 1 0 auto;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: column;
       text-align: center;
-      margin: 0 auto 50px;
+      margin: 70px auto 50px;
     }
+
+    #rest-api-instructions {
+      width: 60%;
+      padding: 2%;
+      border-radius: 8px;
+      font-size: 1.35em;
+      background-color: #d78939;
+      font-family: monospace;
+      text-align: left;
+    }
+
+    #trigger-rest-api-instructions {
+      cursor: pointer;
+    }
+
     #footer {
       display: flex;
       min-height: 50px;
@@ -84,11 +107,13 @@
       justify-content: space-between;
       align-items: center;
     }
+
     #footer div {
       width: 28%;
       font-size: 1.45em;
       padding: 0 2%;
     }
+
     #url-input {
       display: inline-block;
       width: 100%;
@@ -103,7 +128,7 @@
     #shorten-button {
       height: 50px;
       width: 180px;
-      margin-bottom: 60px;
+      margin-bottom: 50px;
       border-radius: 6px;
       background-color: #ca5172;
       color: #fff;
@@ -112,21 +137,22 @@
       font-family: "VT323", monospace;
       cursor: pointer;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 
   <body>
     <header id="header">
       <h1>earl.sh</h1>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged. It was popularised in the 1960s with the release
-        of Letraset sheets containing Lorem Ipsum passages, and more recently
-        with desktop publishing software like Aldus PageMaker including versions
-        of Lorem Ipsum.
+      <p class="intro-text">
+        earl is a fun side project for shortening URLs. It was created as an
+        experiment into how such project can be done in Go. A link can be
+        shortened through the form below, by using the public REST API, or by
+        using the tiny command line interface that can be installed. The
+        lifespan of a shortened link is 72 hours. The code can be explored and
+        played with on GitHub.
       </p>
     </header>
     <main id="main">
@@ -143,9 +169,21 @@
         <input type="submit" id="shorten-button" value="Shorten" />
       </form>
       <div id="response-container"></div>
+      <div id="rest-api-instructions" class="hidden">
+        <p>
+          <strong>POST</strong> /api/shorten <br />
+          <strong>Payload:</strong> &nbsp;{ "url": "https://earl.sh" } <br />
+          <strong>Response:</strong> { "Url": "https://earl.sh/l7zslgO" }
+        </p>
+      </div>
     </main>
     <footer id="footer">
-      <div>Public API</div>
+      <div
+        id="trigger-rest-api-instructions"
+        onClick="triggerApiInstructions()"
+      >
+        REST API
+      </div>
       <div style="text-align: center">
         <a href="https://shiftingphotons.dev" target="_blank"
           >https://shiftingphotons.dev</a
@@ -174,7 +212,7 @@
     const showShortenedUrl = (shortenedUrl) => {
       let html = `
             <h2>Your short URL is ready. It will be available for 72 hours.</h2>
-            <h2 style="color: #728BE7"><a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a></h2>
+            <h2 style="color: #728BE7; margin-bottom: 40px;"><a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a></h2>
           `;
       let container = document.getElementById("response-container");
       container.innerHTML = html;
@@ -201,6 +239,11 @@
         .catch((error) => {
           console.error("Error:", error);
         });
+    };
+
+    const triggerApiInstructions = () => {
+      const container = document.getElementById("rest-api-instructions");
+      container.className = container.className == "hidden" ? "" : "hidden";
     };
   </script>
 </html>
