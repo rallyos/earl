@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>earl - shorten urls for fun.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <style>
+    body,
+    html {
+      display: flex;
+      flex-direction: column;
+      background-color: #3b1c47;
+      font-family: "VT323", monospace;
+      margin: 0 auto;
+      width: 100vw;
+      height: 100vh;
+
+      <!-- background: rgb(30, 27, 52); -->
+      <!-- background: linear-gradient( -->
+      <!--   180deg, -->
+      <!--   rgba(30, 27, 52, 1) 50%, -->
+      <!--   rgba(33, 91, 163, 1) 100% -->
+      <!-- ); -->
+
+    }
+
+    #header,
+    #main {
+      width: 70vw;
+    }
+
+    #footer {
+      width: 100vw;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin-top: 10px;
+      color: #d78939;
+      font-size: 4em;
+    }
+
+    h2 {
+      color: #d78939;
+      font-size: 2em;
+      margin: 10px auto 10px;
+    }
+
+    #header {
+      min-height: 30vh;
+      text-align: center;
+      margin: 0 auto 0;
+    }
+
+    .intro-text {
+      border-top: solid 4px #d78939;
+      padding-top: 30px;
+      font-size: 1.5em;
+      color: #347BBE;
+    }
+
+    #main {
+      display: flex;
+      flex: 1 0 auto;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      text-align: center;
+      margin: 70px auto 50px;
+    }
+
+    #rest-api-instructions {
+      width: 60%;
+      padding: 2%;
+      border-radius: 8px;
+      font-size: 1.35em;
+      background-color: #d78939;
+      font-family: monospace;
+      text-align: left;
+    }
+
+    #trigger-rest-api-instructions {
+      cursor: pointer;
+    }
+
+    #footer {
+      display: flex;
+      min-height: 50px;
+      background-color: #d78939;
+      flex-shrink: 0;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #footer div {
+      width: 28%;
+      font-size: 1.45em;
+      padding: 0 2%;
+    }
+
+    #url-input {
+      display: inline-block;
+      width: 100%;
+      height: 50px;
+      font-size: 1.15em;
+      padding-left: 2%;
+      margin-bottom: 40px;
+      border-radius: 8px;
+      border: 0;
+    }
+
+    #shorten-button {
+      height: 50px;
+      width: 180px;
+      margin-bottom: 50px;
+      border-radius: 6px;
+      background-color: #ca5172;
+      color: #fff;
+      border: 0;
+      font-size: 1.75em;
+      font-family: "VT323", monospace;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+
+  <body>
+    <header id="header">
+      <h1>earl.sh</h1>
+      <p class="intro-text">
+        earl is a fun side project for shortening URLs. It was created as an
+        experiment into how such project can be done in Go. A link can be
+        shortened through the form below, by using the public REST API, or by
+        using the tiny command line interface that can be installed. The
+        lifespan of a shortened link is 72 hours. The code can be explored and
+        played with on GitHub.
+      </p>
+    </header>
+    <main id="main">
+      <form style="width: 69%" onSubmit="shorten(event)">
+        <input
+          type="url"
+          name="url"
+          id="url-input"
+          pattern="https?://.+"
+          value=""
+          placeholder="A long URL that needs shortening . . ."
+          required
+        />
+        <input type="submit" id="shorten-button" value="Shorten" />
+      </form>
+      <div id="response-container"></div>
+      <div id="rest-api-instructions" class="hidden">
+        <p>
+          <strong>POST</strong> /api/shorten <br />
+          <strong>Payload:</strong> &nbsp;{ "url": "https://earl.sh" } <br />
+          <strong>Response:</strong> { "Url": "https://earl.sh/l7zslgO" }
+        </p>
+      </div>
+    </main>
+    <footer id="footer">
+      <div
+        id="trigger-rest-api-instructions"
+        onClick="triggerApiInstructions()"
+      >
+        REST API
+      </div>
+      <div style="text-align: center">
+        <a href="https://shiftingphotons.dev" target="_blank"
+          >https://shiftingphotons.dev</a
+        >
+      </div>
+      <div style="text-align: right">
+        <a href="https://github.com/shiftingphotons/earl"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            id="github-icon"
+          >
+            <path
+              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+            /></svg
+        ></a>
+      </div>
+    </footer>
+  </body>
+
+  <script>
+    var shortenedUrl = null;
+
+    const showShortenedUrl = (shortenedUrl) => {
+      let html = `
+            <h2>Your short URL is ready. It will be available for 72 hours.</h2>
+            <h2 style="color: #728BE7; margin-bottom: 40px;"><a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a></h2>
+          `;
+      let container = document.getElementById("response-container");
+      container.innerHTML = html;
+    };
+
+    const shorten = (event) => {
+      event.preventDefault();
+      const url = document.getElementById("url-input").value;
+      const request = fetch("/api/shorten", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: url }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          let shortenedUrl = data.Url;
+          showShortenedUrl(shortenedUrl);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+
+    const triggerApiInstructions = () => {
+      const container = document.getElementById("rest-api-instructions");
+      container.className = container.className == "hidden" ? "" : "hidden";
+    };
+  </script>
+</html>
