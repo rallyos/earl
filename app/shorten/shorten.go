@@ -4,9 +4,10 @@ package shorten
 import (
 	"bytes"
 	"crypto/rand"
-	"earl/repositories/url"
 	"math"
 	"math/big"
+
+	"github.com/shiftingphotons/earl/repositories/url"
 )
 
 type Url struct {

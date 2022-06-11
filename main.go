@@ -1,8 +1,9 @@
 package main
 
 import (
-	"earl/app"
 	"fmt"
+
+	"github.com/shiftingphotons/earl/app"
 )
 
 func main() {

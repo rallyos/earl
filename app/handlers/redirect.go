@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"earl/repositories/url"
 	"net/http"
+
+	"github.com/shiftingphotons/earl/repositories/url"
 )
 
 //

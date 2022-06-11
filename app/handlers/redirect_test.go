@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	"earl/app/shorten"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/shiftingphotons/earl/app/shorten"
 
 	"github.com/matryer/is"
 )

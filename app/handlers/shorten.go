@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	"earl/app/shorten"
-	"earl/app/validate"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/shiftingphotons/earl/app/shorten"
+	"github.com/shiftingphotons/earl/app/validate"
 )
 
 type urlWrapper struct {

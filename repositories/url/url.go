@@ -2,9 +2,10 @@ package url
 
 import (
 	"context"
-	"earl/db"
 	"fmt"
 	"time"
+
+	"github.com/shiftingphotons/earl/db"
 )
 
 const EXPIRATION = time.Minute * 120

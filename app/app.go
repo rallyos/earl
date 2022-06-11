@@ -1,12 +1,12 @@
 package app
 
 import (
-	"earl/app/handlers"
-	"earl/db"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/shiftingphotons/earl/app/handlers"
+	"github.com/shiftingphotons/earl/db"
 )
 
 type Server struct {

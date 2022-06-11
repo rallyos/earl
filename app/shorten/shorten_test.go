@@ -1,10 +1,10 @@
 package shorten
 
 import (
-	"earl/db"
 	"testing"
 
 	"github.com/matryer/is"
+	"github.com/shiftingphotons/earl/db"
 )
 
 func init() {
