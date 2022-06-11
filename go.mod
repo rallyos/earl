@@ -1,4 +1,4 @@
-module earl
+module github.com/shiftingphotons/earl
 
 go 1.17
 
