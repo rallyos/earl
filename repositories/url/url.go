@@ -3,17 +3,18 @@ package url
 import (
 	"context"
 	"fmt"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/shiftingphotons/earl/db"
 )
 
-const EXPIRATION = time.Minute * 120
-
 var ctx = context.Background()
 
 func Create(shortUrl, longUrl string) error {
-	if err := db.RDB.Set(ctx, shortUrl, longUrl, EXPIRATION).Err(); err != nil {
+	lifecycle := getRedisLifecycle()
+	if err := db.RDB.Set(ctx, shortUrl, longUrl, lifecycle).Err(); err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
@@ -28,4 +29,19 @@ func Get(shortUrl string) (string, error) {
 	}
 
 	return longUrl, nil
+}
+
+func getRedisLifecycle() time.Duration {
+	lifecycleEnv := os.Getenv("EARL_LIFECYCLE")
+
+	if len(lifecycleEnv) == 0 {
+		lifecycleEnv = "72"
+	}
+
+	lifecycle, err := strconv.Atoi(lifecycleEnv)
+	if err != nil {
+		panic("Lifecycle should be a number of hours.")
+	}
+
+	return time.Hour * time.Duration(lifecycle)
 }
