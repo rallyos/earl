@@ -1,4 +1,4 @@
-module github.com/shiftingphotons/earl
+module github.com/rallyos/earl
 
 go 1.17
 

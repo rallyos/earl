@@ -38,7 +38,7 @@ $ curl -X POST -H "Content-Type: application/json" --data '{"url": "https://earl
 A quick improvisation on how one can use it instantly on the command-line.
 
 ```
-$ go install github.com/shiftingphotons/earl@latest
+$ go install github.com/rallyos/earl@latest
 $ earl shorten --url=https://earl.sh
 ```
 
