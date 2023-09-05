@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/matryer/is"
-	"github.com/shiftingphotons/earl/db"
+	"github.com/rallyos/earl/db"
 )
 
 func init() {
@@ -14,7 +14,7 @@ func init() {
 func TestShorten(t *testing.T) {
 	is := is.New(t)
 
-	url := "https://shiftingphotons.dev/things/internet-historian-engoodening-of-no-mans-sky/"
+	url := "https://rallyo.io/things/internet-historian-engoodening-of-no-mans-sky/"
 	shortenedUrl, err := Shorten(url)
 
 	is.NoErr(err)

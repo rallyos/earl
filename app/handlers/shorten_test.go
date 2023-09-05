@@ -13,7 +13,7 @@ import (
 func TestShorten(t *testing.T) {
 	is := is.New(t)
 
-	requestBody := []byte(`{url: "https://shiftingphotons.dev/things/internet-historian-engoodening-of-no-mans-sky/"}`)
+	requestBody := []byte(`{url: "https://rallyo.io/things/internet-historian-engoodening-of-no-mans-sky/"}`)
 	req := httptest.NewRequest(http.MethodPost, "/api/shorten", bytes.NewBuffer(requestBody))
 	w := httptest.NewRecorder()
 	server.Router.ServeHTTP(w, req)

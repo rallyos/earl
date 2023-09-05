@@ -3,10 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/shiftingphotons/earl/repositories/url"
+	"github.com/rallyos/earl/repositories/url"
 )
 
-//
 func Redirect(w http.ResponseWriter, r *http.Request) {
 	shortUrl := r.RequestURI[1:]
 

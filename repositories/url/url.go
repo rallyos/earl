@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/shiftingphotons/earl/db"
+	"github.com/rallyos/earl/db"
 )
 
 var ctx = context.Background()

@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/shiftingphotons/earl/app/shorten"
+	"github.com/rallyos/earl/app/shorten"
 
 	"github.com/matryer/is"
 )
@@ -15,7 +15,7 @@ import (
 func TestRedirect(t *testing.T) {
 	is := is.New(t)
 
-	longUrl := "https://shiftingphotons.dev/things/internet-historian-engoodening-of-no-mans-sky/"
+	longUrl := "https://rallyo.io/things/internet-historian-engoodening-of-no-mans-sky/"
 	shortUrl, err := createURL(longUrl)
 	is.NoErr(err)
 

@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/shiftingphotons/earl/app/shorten"
-	"github.com/shiftingphotons/earl/app/validate"
+	"github.com/rallyos/earl/app/shorten"
+	"github.com/rallyos/earl/app/validate"
 )
 
 type urlWrapper struct {
 	Url string
 }
 
-//
 func Shorten(w http.ResponseWriter, r *http.Request) {
 	response := json.NewEncoder(w)
 	var urlWrap urlWrapper
@@ -41,7 +40,6 @@ func Shorten(w http.ResponseWriter, r *http.Request) {
 	response.Encode(urlWrap)
 }
 
-//
 func halt(urlWrap *urlWrapper, response *json.Encoder, w http.ResponseWriter, err error) {
 	urlWrap.Url = err.Error()
 	response.Encode(urlWrap)

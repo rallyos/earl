@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/shiftingphotons/earl/app"
+	"github.com/rallyos/earl/app"
 )
 
 /* SendShortenRequest sends a URL to be shortened through the REST API.

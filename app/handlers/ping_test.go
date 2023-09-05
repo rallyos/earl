@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/shiftingphotons/earl/app"
+	"github.com/rallyos/earl/app"
 
 	"github.com/matryer/is"
 )
